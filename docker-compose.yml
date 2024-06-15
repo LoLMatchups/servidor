@@ -1,0 +1,48 @@
+version: '3.9'
+services:
+  api:
+    container_name: lolmatchupsapi
+    image: lolmatchupsapi:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DOCKER_CONTAINER=1
+    env_file:
+      - .env
+    depends_on:
+      - database
+    networks:
+      - lolmatchupsnetwork
+
+  web:
+    container_name: lolmatchupsweb
+    image: lolmatchupsweb:latest
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DOCKER_CONTAINER=1
+    networks:
+      - lolmatchupsnetwork
+
+  database:
+    container_name: lolmatchupdatabase
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${CONTRASENASQL}
+      - MYSQL_DATABASE=${DATABASESQL}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./datos_mysql/data:/var/lib/mysql
+    networks:
+      - lolmatchupsnetwork
+
+networks:
+  lolmatchupsnetwork:
+    driver: bridge
