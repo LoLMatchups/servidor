@@ -27,7 +27,7 @@ CREATE TABLE notes (
     champion_id INT,
     vs_champion_id INT,
     note TEXT,
-    usuario VARCHAR(20)
+    usuario VARCHAR(35)
     FOREIGN KEY (champion_id) REFERENCES champions(id),
     FOREIGN KEY (vs_champion_id) REFERENCES champions(id)
 );
